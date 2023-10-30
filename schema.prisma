@@ -1,0 +1,36 @@
+datasource db {
+  provider = "mysql"
+  url      = "mysql://prisma_id:123@localhost:3306/prisma_db"
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+
+model users {
+  id     Int      @id @default(autoincrement())
+  name   String
+  posts  posts[]
+}
+
+model posts {
+  id        Int     @id @default(autoincrement())
+  title     String  @db.Char(255)
+  published Boolean @default(true)
+  authorId  Int
+  author    users   @relation(fields: [authorId], references: [id])
+
+  @@index([authorId], map: "posts_authorId_fkey")
+}
+
+model testes {
+  id     String  @id @default(uuid())
+  title  String  @db.Char(1)
+}
+
+
+model testes2 {
+  id     String  @id @default(uuid())
+  title  String  @db.Char(1)
+}
